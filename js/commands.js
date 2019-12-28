@@ -1,32 +1,16 @@
 document.addEventListener('keydown', (event) => {
 	const acceptedMoves = {
 		ArrowLeft() {
-			if (lastMovement !== 'ArrowRight') {
-				game.snake.xAxis.velocity = -1;
-				game.snake.yAxis.velocity = 0;
-				lastMovement = event.key;
-			}
+			setDirection(-1, 0);
 		},
 		ArrowUp() {
-			if (lastMovement !== 'ArrowDown') {
-				game.snake.xAxis.velocity = 0;
-				game.snake.yAxis.velocity = -1;
-				lastMovement = event.key;
-			}
+			setDirection(0, -1);
 		},
 		ArrowRight() {
-			if (lastMovement !== 'ArrowLeft') {
-				game.snake.xAxis.velocity = 1;
-				game.snake.yAxis.velocity = 0;
-				lastMovement = event.key;
-			}
+			setDirection(1, 0);
 		},
 		ArrowDown() {
-			if (lastMovement !== 'ArrowUp') {
-				game.snake.xAxis.velocity = 0;
-				game.snake.yAxis.velocity = 1;
-				lastMovement = event.key;
-			}
+			setDirection(0, 1);
 		}
 	}
 
@@ -36,3 +20,11 @@ document.addEventListener('keydown', (event) => {
 		moveFunction();
 	} 
 });
+
+function setDirection(x, y) {
+	if ((game.snake.xAxis.velocity !== x && game.snake.yAxis.velocity !== y) || !(game.snake.xAxis.velocity || game.snake.yAxis.velocity)) {
+
+		game.snake.xAxis.velocity = x;
+		game.snake.yAxis.velocity = y;
+	}
+}

@@ -30,8 +30,6 @@ const game = {
 	}
 }
 
-var lastMovement;
-
 
 setInterval( () => {
 	nextPosition('xAxis');
@@ -58,7 +56,6 @@ setInterval( () => {
 			game.snake.yAxis.velocity = 0;
 			game.snake.tail.length = 5;
 			game.snake.tail.tails = [];
-			lastMovement = '';
 
 			updateRecord(Math.max(game.score.record, game.score.actual));
 		}
