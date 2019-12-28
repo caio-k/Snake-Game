@@ -43,16 +43,16 @@ setInterval( () => {
 	context.strokeRect(0, 0, gameCanvas.width, gameCanvas.height);
 
 	context.fillStyle = 'RED';
-	context.fillRect(game.fruit.xPosition*canvasInfo.squareSide, 
-					 game.fruit.yPosition*canvasInfo.squareSide, 
-				     canvasInfo.squareSide, canvasInfo.squareSide);
+	context.fillRect(game.fruit.xPosition*canvasInfo.squareSide,
+		game.fruit.yPosition*canvasInfo.squareSide,
+		canvasInfo.squareSide, canvasInfo.squareSide);
 
 	context.fillStyle = 'GREEN';
 	for (const somePartOfTail of game.snake.tail.tails) {
 
-		context.fillRect(somePartOfTail.x*canvasInfo.squareSide, 
-						 somePartOfTail.y*canvasInfo.squareSide,
-						 canvasInfo.squareSide, canvasInfo.squareSide);
+		context.fillRect(somePartOfTail.x*canvasInfo.squareSide,
+			somePartOfTail.y*canvasInfo.squareSide,
+			canvasInfo.squareSide, canvasInfo.squareSide);
 
 		if (somePartOfTail.x === game.snake.xAxis.position && somePartOfTail.y === game.snake.yAxis.position) {
 			game.snake.xAxis.velocity = 0;
@@ -62,12 +62,7 @@ setInterval( () => {
 			game.fruit.collected = 0;
 			lastMovement = '';
 
-			if (game.score.actual > game.score.record) {
-				game.score.record = game.score.actual;
-				game.score.actual = 0;
-			}
-
-			updateScoreboard();
+			updateRecord(Math.max(game.score.record, game.score.actual));
 		}
 	}
 
@@ -85,8 +80,7 @@ setInterval( () => {
 		game.fruit.collected++;
 		game.fruit.xPosition = generateRandomNumber();
 		game.fruit.yPosition = generateRandomNumber();
-		game.score.actual++;
-		updateScoreboard();
+		updateActual(game.score.actual + 1);
 	}
 }, 100);
 
@@ -100,6 +94,16 @@ function nextPosition(axis) {
 
 function generateRandomNumber() {
 	return Math.floor(Math.random()*canvasInfo.numberOfSquare);
+}
+
+function updateRecord(value) {
+	game.score.record = value;
+	updateActual(0);
+}
+
+function updateActual(value) {
+	game.score.actual = value;
+	updateScoreboard();
 }
 
 function updateScoreboard() {
