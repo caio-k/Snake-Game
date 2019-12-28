@@ -22,8 +22,7 @@ const game = {
 	},
 	fruit: {
 		xPosition: 15,
-		yPosition: 15,
-		collected: 0
+		yPosition: 15
 	},
 	score: {
 		actual: 0,
@@ -59,7 +58,6 @@ setInterval( () => {
 			game.snake.yAxis.velocity = 0;
 			game.snake.tail.length = 5;
 			game.snake.tail.tails = [];
-			game.fruit.collected = 0;
 			lastMovement = '';
 
 			updateRecord(Math.max(game.score.record, game.score.actual));
@@ -77,7 +75,6 @@ setInterval( () => {
 
 	if (game.snake.xAxis.position === game.fruit.xPosition && game.snake.yAxis.position === game.fruit.yPosition) {
 		game.snake.tail.length++;
-		game.fruit.collected++;
 		game.fruit.xPosition = generateRandomNumber();
 		game.fruit.yPosition = generateRandomNumber();
 		updateActual(game.score.actual + 1);
