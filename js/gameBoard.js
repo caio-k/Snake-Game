@@ -1,3 +1,6 @@
+const gameCanvas = document.getElementById('gameBoard');
+const context = gameCanvas.getContext('2d');
+
 const canvasInfo = {
 	squareSide: 20,
 	numberOfSquare: 20
@@ -28,9 +31,6 @@ const game = {
 	}
 }
 
-
-var gameCanvas = document.getElementById('gameBoard');
-var context = gameCanvas.getContext('2d');
 var lastMovement;
 
 
@@ -44,15 +44,15 @@ setInterval( () => {
 
 	context.fillStyle = 'RED';
 	context.fillRect(game.fruit.xPosition*canvasInfo.squareSide, 
-									 game.fruit.yPosition*canvasInfo.squareSide, 
-									 canvasInfo.squareSide, canvasInfo.squareSide);
+					 game.fruit.yPosition*canvasInfo.squareSide, 
+				     canvasInfo.squareSide, canvasInfo.squareSide);
 
 	context.fillStyle = 'GREEN';
 	for (const somePartOfTail of game.snake.tail.tails) {
 
 		context.fillRect(somePartOfTail.x*canvasInfo.squareSide, 
-										 somePartOfTail.y*canvasInfo.squareSide,
-										 canvasInfo.squareSide, canvasInfo.squareSide);
+						 somePartOfTail.y*canvasInfo.squareSide,
+						 canvasInfo.squareSide, canvasInfo.squareSide);
 
 		if (somePartOfTail.x === game.snake.xAxis.position && somePartOfTail.y === game.snake.yAxis.position) {
 			game.snake.xAxis.velocity = 0;
@@ -105,43 +105,3 @@ function generateRandomNumber() {
 function updateScoreboard() {
 	document.getElementById('score').textContent = 'Record: ' + game.score.record + '\nScore: ' + game.score.actual;
 }
-
-
-document.addEventListener('keydown', (event) => {
-	const acceptedMoves = {
-		ArrowLeft() {
-			if (lastMovement !== 'ArrowRight') {
-				game.snake.xAxis.velocity = -1;
-				game.snake.yAxis.velocity = 0;
-				lastMovement = event.key;
-			}
-		},
-		ArrowUp() {
-			if (lastMovement !== 'ArrowDown') {
-				game.snake.xAxis.velocity = 0;
-				game.snake.yAxis.velocity = -1;
-				lastMovement = event.key;
-			}
-		},
-		ArrowRight() {
-			if (lastMovement !== 'ArrowLeft') {
-				game.snake.xAxis.velocity = 1;
-				game.snake.yAxis.velocity = 0;
-				lastMovement = event.key;
-			}
-		},
-		ArrowDown() {
-			if (lastMovement !== 'ArrowUp') {
-				game.snake.xAxis.velocity = 0;
-				game.snake.yAxis.velocity = 1;
-				lastMovement = event.key;
-			}
-		}
-	}
-
-	const moveFunction = acceptedMoves[event.key];
-
-	if (moveFunction) {
-		moveFunction();
-	} 
-});
