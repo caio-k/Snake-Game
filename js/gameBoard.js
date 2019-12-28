@@ -39,10 +39,12 @@ setInterval( () => {
 	context.clearRect(0, 0, gameCanvas.width, gameCanvas.height);
 	context.strokeRect(0, 0, gameCanvas.width, gameCanvas.height);
 
+	context.beginPath();
 	context.fillStyle = 'RED';
-	context.fillRect(game.fruit.xPosition*canvasInfo.squareSide,
-		game.fruit.yPosition*canvasInfo.squareSide,
-		canvasInfo.squareSide, canvasInfo.squareSide);
+	context.arc(game.fruit.xPosition*canvasInfo.squareSide + canvasInfo.squareSide/2,
+		game.fruit.yPosition*canvasInfo.squareSide + canvasInfo.squareSide/2,
+		canvasInfo.squareSide/2, 0, 2*Math.PI);
+	context.fill();
 
 	context.fillStyle = 'GREEN';
 	for (const somePartOfTail of game.snake.tail.tails) {
