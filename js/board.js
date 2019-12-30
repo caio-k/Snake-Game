@@ -4,7 +4,7 @@ const context = gameCanvas.getContext('2d');
 const canvasInfo = {
 	squareSide: 20,
 	numberOfSquare: 20
-}
+};
 const game = {
 	snake: {
 		xAxis: {
@@ -24,7 +24,7 @@ const game = {
 		xPosition: 15,
 		yPosition: 15
 	}
-}
+};
 
 setInterval( () => {
 	nextPosition('xAxis');
@@ -42,25 +42,24 @@ setInterval( () => {
 	context.fill();
 
 	context.fillStyle = 'GREEN';
-	for (const somePartOfTail of game.snake.tail.tails) {
-
-		context.fillRect(somePartOfTail.x*canvasInfo.squareSide,
-			somePartOfTail.y*canvasInfo.squareSide,
+	game.snake.tail.tails.forEach(partOfTail => {
+		context.fillRect(partOfTail.x*canvasInfo.squareSide,
+			partOfTail.y*canvasInfo.squareSide,
 			canvasInfo.squareSide, canvasInfo.squareSide);
 
-		if (somePartOfTail.x === game.snake.xAxis.position && somePartOfTail.y === game.snake.yAxis.position) {
+		if (partOfTail.x === game.snake.xAxis.position && partOfTail.y === game.snake.yAxis.position) {
 			game.snake.xAxis.velocity = 0;
 			game.snake.yAxis.velocity = 0;
 			game.snake.tail.length = 5;
 			game.snake.tail.tails = [];
 			updateRecordScore();
 		}
-	}
+	});
 
 	game.snake.tail.tails.push({
 		x: game.snake.xAxis.position,
 		y: game.snake.yAxis.position
-	})
+	});
 
 	while (game.snake.tail.tails.length > game.snake.tail.length) {
 		game.snake.tail.tails.shift();
@@ -75,11 +74,9 @@ setInterval( () => {
 }, 100);
 
 function nextPosition(axis) {
-	game.snake[axis].position = (game.snake[axis].position + game.snake[axis].velocity) % canvasInfo.numberOfSquare;
+	var position = (game.snake[axis].position + game.snake[axis].velocity) % canvasInfo.numberOfSquare;
 
-	if (game.snake[axis].position < 0) {
-		game.snake[axis].position = canvasInfo.numberOfSquare - 1;
-	}
+	game.snake[axis].position = position < 0 ? canvasInfo.numberOfSquare - 1 : position;
 }
 
 function generateRandomNumber() {

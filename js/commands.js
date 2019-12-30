@@ -1,4 +1,4 @@
-document.addEventListener('keydown', (event) => {
+document.addEventListener('keydown', event => {
 	const acceptedMoves = {
 		ArrowLeft() {
 			setDirection(-1, 0);
