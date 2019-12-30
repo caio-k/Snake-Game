@@ -23,13 +23,8 @@ const game = {
 	fruit: {
 		xPosition: 15,
 		yPosition: 15
-	},
-	score: {
-		actual: 0,
-		record: 0
 	}
 }
-
 
 setInterval( () => {
 	nextPosition('xAxis');
@@ -58,8 +53,7 @@ setInterval( () => {
 			game.snake.yAxis.velocity = 0;
 			game.snake.tail.length = 5;
 			game.snake.tail.tails = [];
-
-			updateRecord(Math.max(game.score.record, game.score.actual));
+			updateRecordScore();
 		}
 	}
 
@@ -76,7 +70,7 @@ setInterval( () => {
 		game.snake.tail.length++;
 		game.fruit.xPosition = generateRandomNumber();
 		game.fruit.yPosition = generateRandomNumber();
-		updateActual(game.score.actual + 1);
+		increaseCurrentScore();
 	}
 }, 100);
 
@@ -90,18 +84,4 @@ function nextPosition(axis) {
 
 function generateRandomNumber() {
 	return Math.floor(Math.random()*canvasInfo.numberOfSquare);
-}
-
-function updateRecord(value) {
-	game.score.record = value;
-	updateActual(0);
-}
-
-function updateActual(value) {
-	game.score.actual = value;
-	updateScoreboard();
-}
-
-function updateScoreboard() {
-	document.getElementById('score').textContent = 'Record: ' + game.score.record + '\nScore: ' + game.score.actual;
 }
