@@ -22,7 +22,7 @@ document.addEventListener('keydown', event => {
 });
 
 function setDirection(x, y) {
-	if ((state.snake.xVelocity !== x && state.snake.yVelocity !== y) || !(state.snake.xVelocity || state.snake.yVelocity)) {
+	if (_.add(state.snake.xVelocity, x) !== 0 || _.add(state.snake.yVelocity, y) !== 0) {
 		state.snake.xVelocity = x;
 		state.snake.yVelocity = y;
 	}
