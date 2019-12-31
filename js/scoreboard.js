@@ -4,7 +4,7 @@ const score = {
 }
 
 function updateRecordScore() {
-	score.record = Math.max(score.current, score.record);
+	score.record = _.max([score.current, score.record]);
 	resetCurrentScore();
 }
 
@@ -14,7 +14,7 @@ function resetCurrentScore() {
 }
 
 function increaseCurrentScore() {
-	score.current = score.current + 1;
+	score.current = _.add(score.current, 1);
 	updateScoreboardView();
 }
 

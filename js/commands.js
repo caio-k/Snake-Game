@@ -22,9 +22,8 @@ document.addEventListener('keydown', event => {
 });
 
 function setDirection(x, y) {
-	if ((game.snake.xAxis.velocity !== x && game.snake.yAxis.velocity !== y) || !(game.snake.xAxis.velocity || game.snake.yAxis.velocity)) {
-
-		game.snake.xAxis.velocity = x;
-		game.snake.yAxis.velocity = y;
+	if ((state.snake.xVelocity !== x && state.snake.yVelocity !== y) || !(state.snake.xVelocity || state.snake.yVelocity)) {
+		state.snake.xVelocity = x;
+		state.snake.yVelocity = y;
 	}
 }

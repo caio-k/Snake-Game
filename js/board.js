@@ -5,20 +5,14 @@ const canvasInfo = {
 	squareSide: 20,
 	numberOfSquare: 20
 };
-const game = {
+const state = {
 	snake: {
-		xAxis: {
-			position: 5,
-			velocity: 0
-		},
-		yAxis: {
-			position: 5,
-			velocity: 0
-		},
-		tail: {
-			length: 5,
-			tails: []
-		}
+		xPosition: 5,
+		yPosition: 5,
+		xVelocity: 0,
+		yVelocity: 0,
+		length: 5,
+		tails: []
 	},
 	fruit: {
 		xPosition: 15,
@@ -27,8 +21,8 @@ const game = {
 };
 
 setInterval( () => {
-	nextPosition('xAxis');
-	nextPosition('yAxis');
+	state.snake.xPosition = nextPosition(state.snake.xPosition, state.snake.xVelocity);
+	state.snake.yPosition = nextPosition(state.snake.yPosition, state.snake.yVelocity);
 
 	context.strokeStyle = 'GRAY';
 	context.clearRect(0, 0, gameCanvas.width, gameCanvas.height);
@@ -36,49 +30,50 @@ setInterval( () => {
 
 	context.beginPath();
 	context.fillStyle = 'RED';
-	context.arc(game.fruit.xPosition*canvasInfo.squareSide + canvasInfo.squareSide/2,
-		game.fruit.yPosition*canvasInfo.squareSide + canvasInfo.squareSide/2,
+	context.arc(state.fruit.xPosition*canvasInfo.squareSide + canvasInfo.squareSide/2,
+		state.fruit.yPosition*canvasInfo.squareSide + canvasInfo.squareSide/2,
 		canvasInfo.squareSide/2, 0, 2*Math.PI);
 	context.fill();
 
 	context.fillStyle = 'GREEN';
-	game.snake.tail.tails.forEach(partOfTail => {
-		context.fillRect(partOfTail.x*canvasInfo.squareSide,
-			partOfTail.y*canvasInfo.squareSide,
+	_.each(state.snake.tails, partOfTail => {
+		context.fillRect(partOfTail.xPosition*canvasInfo.squareSide,
+			partOfTail.yPosition*canvasInfo.squareSide,
 			canvasInfo.squareSide, canvasInfo.squareSide);
 
-		if (partOfTail.x === game.snake.xAxis.position && partOfTail.y === game.snake.yAxis.position) {
-			game.snake.xAxis.velocity = 0;
-			game.snake.yAxis.velocity = 0;
-			game.snake.tail.length = 5;
-			game.snake.tail.tails = [];
+		if (areInTheSamePosition(partOfTail, state.snake)) {
+			state.snake.xVelocity = 0;
+			state.snake.yVelocity = 0;
+			state.snake.length = 5;
+			state.snake.tails = [];
 			updateRecordScore();
 		}
 	});
 
-	game.snake.tail.tails.push({
-		x: game.snake.xAxis.position,
-		y: game.snake.yAxis.position
+	state.snake.tails.push({
+		xPosition: state.snake.xPosition,
+		yPosition: state.snake.yPosition
 	});
 
-	while (game.snake.tail.tails.length > game.snake.tail.length) {
-		game.snake.tail.tails.shift();
+	var difference = state.snake.tails.length - state.snake.length;
+	if (difference > 0) {
+		state.snake.tails = _.slice(state.snake.tails, difference);
 	}
 
-	if (game.snake.xAxis.position === game.fruit.xPosition && game.snake.yAxis.position === game.fruit.yPosition) {
-		game.snake.tail.length++;
-		game.fruit.xPosition = generateRandomNumber();
-		game.fruit.yPosition = generateRandomNumber();
+	if (areInTheSamePosition(state.snake, state.fruit)) {
+		state.snake.length++;
+		state.fruit.xPosition = _.random(canvasInfo.numberOfSquare - 1);
+		state.fruit.yPosition = _.random(canvasInfo.numberOfSquare - 1);
 		increaseCurrentScore();
 	}
 }, 100);
 
-function nextPosition(axis) {
-	var position = (game.snake[axis].position + game.snake[axis].velocity) % canvasInfo.numberOfSquare;
-
-	game.snake[axis].position = position < 0 ? canvasInfo.numberOfSquare - 1 : position;
+function nextPosition(position, velocity) {
+	var position = _.add(position, velocity) % canvasInfo.numberOfSquare;
+	return position < 0 ? canvasInfo.numberOfSquare - 1 : position;
 }
 
-function generateRandomNumber() {
-	return Math.floor(Math.random()*canvasInfo.numberOfSquare);
+function areInTheSamePosition(firstObject, secondObject) {
+	var positionParameters = ['xPosition', 'yPosition'];
+	return _.isEqual(_.pick(firstObject, positionParameters), _.pick(secondObject, positionParameters)); 
 }
