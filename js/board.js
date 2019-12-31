@@ -24,18 +24,17 @@ setInterval( () => {
 	state.snake.xPosition = nextPosition(state.snake.xPosition, state.snake.xVelocity);
 	state.snake.yPosition = nextPosition(state.snake.yPosition, state.snake.yVelocity);
 
-	context.strokeStyle = 'GRAY';
-	context.clearRect(0, 0, gameCanvas.width, gameCanvas.height);
-	context.strokeRect(0, 0, gameCanvas.width, gameCanvas.height);
+	context.fillStyle = '#B38975';
+	context.fillRect(0, 0, gameCanvas.width, gameCanvas.height);
 
 	context.beginPath();
-	context.fillStyle = 'RED';
+	context.fillStyle = '#FF4137';
 	context.arc(state.fruit.xPosition*canvasInfo.squareSide + canvasInfo.squareSide/2,
 		state.fruit.yPosition*canvasInfo.squareSide + canvasInfo.squareSide/2,
 		canvasInfo.squareSide/2, 0, 2*Math.PI);
 	context.fill();
 
-	context.fillStyle = 'GREEN';
+	context.fillStyle = '#7DCC95';
 	_.each(state.snake.tails, partOfTail => {
 		context.fillRect(partOfTail.xPosition*canvasInfo.squareSide,
 			partOfTail.yPosition*canvasInfo.squareSide,
